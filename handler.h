@@ -17,6 +17,7 @@ bool naMiejscaPlayed;
 bool hopPlayed;
 int pauseOne;
 int pauseTwo;
+int measuredTime;
 };
 
 bool autoSequence(XT_DAC_Audio_Class &DAC, XT_Wav_Class &whistle, XT_Wav_Class &naMiejsca, XT_Wav_Class &hop, autoSeqStruct &sequence);
