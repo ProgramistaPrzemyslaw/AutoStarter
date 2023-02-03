@@ -23,9 +23,12 @@ bool wasPlayed = false;
 
 bool currentState = false;
 bool previousState = true;
-bool isFinished = true;
+
+bool autoFinish = true;
+bool manualFinish = true;
 
 bool autoButtonState = false;
+bool manualButtonState = false;
 bool timeButtonState = false;
 
 autoSeqStruct sequence;
@@ -57,10 +60,10 @@ void loop() {
 
   if(digitalRead(AUTO_BUTTON) == LOW && autoButtonState == false){
     currentState = !currentState;
-    isFinished = !isFinished;
+    autoFinish = !autoFinish;
     autoButtonState = true;
     Serial.println("LOW");
-   // isFinished = true;
+   // autoFinish = true;
   }
 
   if(digitalRead(AUTO_BUTTON) == HIGH && autoButtonState == true){
@@ -68,17 +71,26 @@ void loop() {
     Serial.println("HIGH");
   }
 
-  if(digitalRead(MANUAL_BUTTON) == LOW){
-    DAC.Play(&hop_part);
+  if(digitalRead(MANUAL_BUTTON) == LOW && manualButtonState == false){
+    manualButtonState = true;
+    manualFinish = manualSequence(DAC, hop_part, manualSeqStruct);
+   // manualFinish = !manualFinish;
+  }
+
+  if(digitalRead(MANUAL_BUTTON) == HIGH && manualButtonState == true){
+    manualButtonState = false;
   }
 
   if(digitalRead(TIME_PIN) == LOW && timeButtonState == false){
     
-    Serial.print("Stopped at:");
-    Serial.println(millis() - sequence.measuredTime);
+    
+    measureTime(manualSeqStruct);
+
+    measureTime(sequence);
+    
     timeButtonState = true;
     
-   // isFinished = true;
+   // autoFinish = true;
   }
 
   if(digitalRead(TIME_PIN) == HIGH && timeButtonState == true){
@@ -87,15 +99,20 @@ void loop() {
 
 //autoSequence(DAC, whistle_part, naMiejsca, hop_part, sequence);
 
-  if(isFinished == false){
-    isFinished = autoSequence(DAC, whistle_part, naMiejsca, hop_part, sequence);
+  if(autoFinish == false){
+    autoFinish = autoSequence(DAC, whistle_part, naMiejsca, hop_part, sequence);
   }else{
     sequence.whistlePlayed = false;
     sequence.naMiejscaPlayed = false;
     sequence.hopPlayed = false;  
   }
+
+  if(manualFinish == true){
+    manualSeqStruct.hopPlayed = false;
+  }
+
 /*
-  if(isFinished){
+  if(autoFinish){
     sequence.whistlePlayed = false;
     sequence.naMiejscaPlayed = false;
     sequence.hopPlayed = false;   
@@ -111,7 +128,7 @@ void loop() {
   /*
   if(millis()%500){
   Serial.print("finish status");
-  Serial.println(isFinished);
+  Serial.println(autoFinish);
   }*/
  
 }

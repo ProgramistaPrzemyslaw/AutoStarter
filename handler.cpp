@@ -36,11 +36,27 @@ if(sequence.whistlePlayed == false){
 }
 
 
-void manualSequence(XT_DAC_Audio_Class &DAC, XT_Wav_Class &hop, autoSeqStruct &sequence){
+bool manualSequence(XT_DAC_Audio_Class &DAC, XT_Wav_Class &hop, autoSeqStruct &sequence){
     if(sequence.hopPlayed== false){
     DAC.Play(&hop);
     sequence.hopPlayed = true;
     Serial.println("hop");
+    sequence.measuredTime = millis();
     }
-    
+
+    if(sequence.hopPlayed == true && millis() >= sequence.pauseTwo + 134){ //134 is exact duration of sound
+         
+        Serial.println("czemu to tu jest?");
+        return true;
+    }else{
+        return false;
+    }
 }
+
+void measureTime(autoSeqStruct &sequence){
+
+    Serial.print("Stopped at:");
+    Serial.println(millis() - sequence.measuredTime);
+
+}
+
