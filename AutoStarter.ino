@@ -25,8 +25,8 @@ int startTimeMillis = 15000;
 int selectedTime = 0;
 bool wasPlayed = false;
 
-bool currentState = false;
-bool previousState = true;
+bool wasAuto = false;
+bool wasManual = true;
 
 bool autoFinish = true;
 bool manualFinish = true;
@@ -71,6 +71,7 @@ void loop() {
     autoFinish = !autoFinish;
     autoButtonState = true;
     Serial.println("LOW");
+    wasAuto = true;
   
   }
 
@@ -82,6 +83,7 @@ void loop() {
   if(digitalRead(MANUAL_BUTTON) == LOW && manualButtonState == false){
     manualButtonState = true;
     manualFinish = manualSequence(DAC, hop_part, manualSeqStruct);
+    wasManual = true;
    // manualFinish = !manualFinish;
   }
 
@@ -91,16 +93,16 @@ void loop() {
 
   if(digitalRead(TIME_PIN) == LOW && timeButtonState == false){
     
-    
-    measureTime(manualSeqStruct);
+    if(wasManual == true)
+    selectedTime = measureTime(manualSeqStruct);
 
-    measureTime(sequence);
+    if(wasAuto == true)
+    selectedTime = measureTime(sequence);
     
-    if(manualSeqStruct.measuredTime >= sequence.measuredTime){
-      selectedTime = sequence.measuredTime;
-    }else if(manualSeqStruct.measuredTime <= sequence.measuredTime){
-      selectedTime = manualSeqStruct.measuredTime;
-    }
+    wasAuto = false;
+    wasManual = false;
+
+    
 
     timeButtonState = true;
     

@@ -54,15 +54,17 @@ bool manualSequence(XT_DAC_Audio_Class &DAC, XT_Wav_Class &hop, autoSeqStruct &s
     }
 }
 
-void measureTime(autoSeqStruct &sequence){
+int measureTime(autoSeqStruct &sequence){
 
-    
-    sequence.measuredTime = millis() - sequence.measuredTime;
-    if(sequence.measuredTime >= MAX_TIME_SEC){
-        sequence.measuredTime = MAX_TIME_SEC;
+    int time = millis() - sequence.measuredTime;
+
+    if(time >= MAX_TIME_SEC){
+        time = MAX_TIME_SEC;
     }
     Serial.print("Stopped at:");
+    Serial.println(time);
     Serial.println(sequence.measuredTime);
     
+    return time;
 }
 

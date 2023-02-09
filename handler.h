@@ -22,5 +22,5 @@ int measuredTime;
 
 bool autoSequence(XT_DAC_Audio_Class &DAC, XT_Wav_Class &whistle, XT_Wav_Class &naMiejsca, XT_Wav_Class &hop, autoSeqStruct &sequence);
 bool manualSequence(XT_DAC_Audio_Class &DAC, XT_Wav_Class &hop, autoSeqStruct &sequence);
-void measureTime(autoSeqStruct &sequence);
+int measureTime(autoSeqStruct &sequence);
 void resetStruct(autoSeqStruct &sequence);
