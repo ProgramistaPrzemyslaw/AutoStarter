@@ -1,15 +1,18 @@
 
-
+#include "LED_display.h"
 #include "handler.h"
+
 
 #define MANUAL_BUTTON 0
 #define AUTO_BUTTON 4
 #define TIME_PIN 16
 
-XT_DAC_Audio_Class DAC(25,0);      // Create the main player class object. 
-                                        // Use GPIO 25, one of the 2 DAC pins and timer 0
+
+//extern const int digitPins[4];
+
+XT_DAC_Audio_Class DAC(25,0);    
+
                                       
-//XT_Wav_Class autoSeq(start8bit);     // create an object of type XT_Wav_Class that is used by 
 XT_Wav_Class autoSeq(mono8bit);
 XT_Wav_Class manualSeq(start8bit);
 XT_Wav_Class sins(sin1kHz);
@@ -19,6 +22,7 @@ XT_Wav_Class whistle_part(whistle);
 XT_Wav_Class naMiejsca(na_miejsca);
 
 int startTimeMillis = 15000;
+int selectedTime = 0;
 bool wasPlayed = false;
 
 bool currentState = false;
@@ -41,29 +45,33 @@ void setup() {
   sequence.whistlePlayed = false;
   sequence.naMiejscaPlayed = false;
   sequence.hopPlayed = false;
-  sequence.pauseOne = 2000;
-  sequence.pauseTwo = 500;
 
   manualSeqStruct.hopPlayed = false;
+
+  for(int i = 0; i <4; i++){
+    pinMode(digitPins[i], OUTPUT);
+  }
+
+  pinMode(CLK_PIN, OUTPUT);
+  pinMode(LATCH_PIN, OUTPUT);
+  pinMode(DATA_PIN, OUTPUT);
 
   pinMode(AUTO_BUTTON, INPUT_PULLUP);
   pinMode(MANUAL_BUTTON, INPUT_PULLUP);
   pinMode(TIME_PIN, INPUT_PULLUP);
-  delay(1);                             // Allow system to settle, otherwise garbage can play for first second
+  delay(1);                             
 }
 
 void loop() {
-  DAC.FillBuffer();                // Fill the sound buffer with data, required once in your main loop
+  DAC.FillBuffer();                
   
 
-  previousState = currentState;
 
   if(digitalRead(AUTO_BUTTON) == LOW && autoButtonState == false){
-    currentState = !currentState;
     autoFinish = !autoFinish;
     autoButtonState = true;
     Serial.println("LOW");
-   // autoFinish = true;
+  
   }
 
   if(digitalRead(AUTO_BUTTON) == HIGH && autoButtonState == true){
@@ -88,6 +96,12 @@ void loop() {
 
     measureTime(sequence);
     
+    if(manualSeqStruct.measuredTime >= sequence.measuredTime){
+      selectedTime = sequence.measuredTime;
+    }else if(manualSeqStruct.measuredTime <= sequence.measuredTime){
+      selectedTime = manualSeqStruct.measuredTime;
+    }
+
     timeButtonState = true;
     
    // autoFinish = true;
@@ -111,6 +125,7 @@ void loop() {
     manualSeqStruct.hopPlayed = false;
   }
 
+  displayTime(selectedTime);
 /*
   if(autoFinish){
     sequence.whistlePlayed = false;

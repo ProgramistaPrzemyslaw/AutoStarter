@@ -1,4 +1,5 @@
 #include "handler.h"
+#include "LED_display.h"
 
 bool autoSequence(XT_DAC_Audio_Class &DAC, XT_Wav_Class &whistle, XT_Wav_Class &naMiejsca, XT_Wav_Class &hop, autoSeqStruct &sequence){
 
@@ -55,8 +56,13 @@ bool manualSequence(XT_DAC_Audio_Class &DAC, XT_Wav_Class &hop, autoSeqStruct &s
 
 void measureTime(autoSeqStruct &sequence){
 
+    
+    sequence.measuredTime = millis() - sequence.measuredTime;
+    if(sequence.measuredTime >= MAX_TIME_SEC){
+        sequence.measuredTime = MAX_TIME_SEC;
+    }
     Serial.print("Stopped at:");
-    Serial.println(millis() - sequence.measuredTime);
-
+    Serial.println(sequence.measuredTime);
+    
 }
 
