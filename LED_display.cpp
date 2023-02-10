@@ -7,15 +7,16 @@ void displayTime(int time){
     digitBuffer[2] = (time%1000)/100;
     digitBuffer[3] = (time%100)/10;
 
-
+    
     for(byte i = 0; i < 4; i++){
         digitalWrite(digitPins[i],LOW);
     }
+
     digitalWrite(LATCH_PIN, LOW);
     shiftOut(DATA_PIN, CLK_PIN, MSBFIRST, B11111111);
     digitalWrite(LATCH_PIN, HIGH);
 
-    delayMicroseconds(100);
+    //delayMicroseconds(100);
     digitalWrite(digitPins[digitNum],HIGH);
 
     digitalWrite(LATCH_PIN, LOW);
