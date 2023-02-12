@@ -10,6 +10,7 @@
 #include "buzz.h"
 #include "whistle8bit.h"
 #include "na_miejsca.h"
+#include "hop_9dB.h"
 
 struct autoSeqStruct{
 bool whistlePlayed;

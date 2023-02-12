@@ -7,8 +7,8 @@
 #define MAX_TIME_SEC 99999
 
 
-
-const int digitPins[4] = {17, 5, 18, 19};
+                          //1 - 5, 2 - 18, 3 - 19, 4 - 17
+const int digitPins[4] = {5, 18, 19, 17};
 static int digitNum = 0;
 static int digitBuffer[4] = {0,0,0,0};
 const byte digitReg[] = {
