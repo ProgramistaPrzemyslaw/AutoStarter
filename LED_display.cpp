@@ -1,5 +1,5 @@
-#include "LED_display.h"
-#include "handler.h"
+#include "include/LED_display.h"
+#include "include/handler.h"
 
 void displayTime(int time){
     digitBuffer[0] = time/10000;

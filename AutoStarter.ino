@@ -1,11 +1,14 @@
 
-#include "LED_display.h"
-#include "handler.h"
+#include "include/LED_display.h"
+#include "include/handler.h"
 
 
-#define MANUAL_BUTTON 0
-#define AUTO_BUTTON 2
-#define TIME_PIN 15
+
+
+
+#define MANUAL_BUTTON 15
+#define AUTO_BUTTON 0
+#define TIME_PIN 2
 
 
 //extern const int digitPins[4];
@@ -17,7 +20,7 @@ XT_Wav_Class autoSeq(mono8bit);
 XT_Wav_Class manualSeq(start8bit);
 XT_Wav_Class sins(sin1kHz);
 XT_Wav_Class autoSeq_neg2dB(auto_neg2dB);
-XT_Wav_Class hop_part(hop9dB);
+XT_Wav_Class hop_part(hop_3dB);
 XT_Wav_Class whistle_part(whistle);
 XT_Wav_Class naMiejsca(na_miejsca);
 
@@ -58,7 +61,7 @@ void setup() {
 
   pinMode(AUTO_BUTTON, INPUT_PULLUP);
   pinMode(MANUAL_BUTTON, INPUT_PULLUP);
-  pinMode(TIME_PIN, INPUT_PULLUP);
+  pinMode(TIME_PIN, INPUT);
   delay(1);                             
 }
 

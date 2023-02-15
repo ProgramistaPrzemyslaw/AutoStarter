@@ -11,6 +11,8 @@
 #include "whistle8bit.h"
 #include "na_miejsca.h"
 #include "hop_9dB.h"
+#include "hop_3dB.h"
+#include "hop_6dB.h"
 
 struct autoSeqStruct{
 bool whistlePlayed;
