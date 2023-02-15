@@ -70,7 +70,7 @@ void loop() {
   
 
 
-  if(digitalRead(AUTO_BUTTON) == LOW && autoButtonState == false){
+  if(digitalRead(AUTO_BUTTON) == LOW && digitalRead(TIME_PIN) == HIGH && autoButtonState == false){
     autoFinish = !autoFinish;
     autoButtonState = true;
     Serial.println("LOW");
@@ -78,7 +78,7 @@ void loop() {
   
   }
 
-  if(digitalRead(AUTO_BUTTON) == HIGH && autoButtonState == true){
+  if(digitalRead(AUTO_BUTTON) == LOW && digitalRead(TIME_PIN) == LOW && autoButtonState == true){
     autoButtonState = false;
     Serial.println("HIGH");
   }
