@@ -20,7 +20,7 @@ XT_Wav_Class autoSeq(mono8bit);
 XT_Wav_Class manualSeq(start8bit);
 XT_Wav_Class sins(sin1kHz);
 XT_Wav_Class autoSeq_neg2dB(auto_neg2dB);
-XT_Wav_Class hop_part(hop_3dB);
+XT_Wav_Class hop_part(hop);
 XT_Wav_Class whistle_part(whistle);
 XT_Wav_Class naMiejsca(na_miejsca);
 
@@ -48,7 +48,7 @@ void setup() {
   sequence.whistlePlayed = false;
   sequence.naMiejscaPlayed = false;
   sequence.hopPlayed = false;
-
+  sequence.measuredTime = 0;
   manualSeqStruct.hopPlayed = false;
 
   for(int i = 0; i <4; i++){
@@ -78,7 +78,7 @@ void loop() {
   
   }
 
-  if(digitalRead(AUTO_BUTTON) == LOW && digitalRead(TIME_PIN) == LOW && autoButtonState == true){
+  if(autoFinish == true && digitalRead(TIME_PIN) == LOW && autoButtonState == true && millis() - sequence.measuredTime >= 2000 ){
     autoButtonState = false;
     Serial.println("HIGH");
   }
